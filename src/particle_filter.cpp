@@ -32,9 +32,9 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	normal_distribution<double> dist_x(x,std[0]);
 	normal_distribution<double> dist_y(y,std[1]);
 	normal_distribution<double> dist_theta(theta,std[2]);
-	std::cout << "/* init_1 */" << '\n';
+	// std::cout << "/* init_1 */" << '\n';
 	Particle p1;
-	std::cout << "/* init_2 */" << '\n';
+	// std::cout << "/* init_2 */" << '\n';
 	for(int i = 0;i<num_particles;i++){
 		p1.x = dist_x(gen);
 		p1.y = dist_y(gen);
@@ -56,8 +56,8 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 	//  http://www.cplusplus.com/reference/random/default_random_engine/
 	std::cout << "/* predict_start */" << '\n';
 	default_random_engine gen;
-	std::cout <<"p1_x="<<particles[0].x<<"p1_y="<<particles[0].y<<"p1_theta="<<particles[0].theta<< '\n';
-	std::cout<<"yaw_rate="<<yaw_rate<<'\n';
+	// std::cout <<"p1_x="<<particles[0].x<<"p1_y="<<particles[0].y<<"p1_theta="<<particles[0].theta<< '\n';
+	// std::cout<<"yaw_rate="<<yaw_rate<<'\n';
 	for(int i=0;i<num_particles;i++){
 		Particle p = particles[i];
 		if(yaw_rate==0){
@@ -70,7 +70,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 			p.theta = p.theta+yaw_rate*delta_t;
 		}
 
-		std::cout <<"x="<<p.x<<"y="<<p.y<<"theta="<<p.theta<< '\n';
+		// std::cout <<"x="<<p.x<<"y="<<p.y<<"theta="<<p.theta<< '\n';
 		normal_distribution<double> dist_x(p.x,std_pos[0]);
 		normal_distribution<double> dist_y(p.y,std_pos[1]);
 		normal_distribution<double> dist_theta(p.theta,std_pos[2]);
@@ -120,19 +120,19 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		Particle p1 = particles[p];
 		std::vector<LandmarkObs> obs_tran;
 
-		std::cout << "/* tramsform */"<<"x="<<observations[0].x<<"y="<<observations[0].y<< '\n';
-		std::cout <<"p1_x="<<particles[0].x<<"p1_y="<<particles[0].y<<"p1_theta="<<particles[0].theta<< '\n';
+		// std::cout << "/* tramsform */"<<"x="<<observations[0].x<<"y="<<observations[0].y<< '\n';
+		// std::cout <<"p1_x="<<particles[0].x<<"p1_y="<<particles[0].y<<"p1_theta="<<particles[0].theta<< '\n';
 			//transform the observations to MAP's coordinate.
 			for(int i=0;i<observations.size();i++){
 				LandmarkObs obs;
 				obs.x = p1.x+(cos(p1.theta)*observations[i].x)-(sin(p1.theta)*observations[i].y);
 				obs.y = p1.y+(sin(p1.theta)*observations[i].x)+(cos(p1.theta)*observations[i].y);
-				std::cout << "obs_x="<<obs.x<<"obs_y="<<obs.y<< '\n';
+				// std::cout << "obs_x="<<obs.x<<"obs_y="<<obs.y<< '\n';
 				obs_tran.push_back(obs);
 			}
 
 
-			std::cout << "/* find */"<< obs_tran[0].id<<"x="<<obs_tran[0].x <<"y="<<obs_tran[0].y<< '\n';
+			// std::cout << "/* find */"<< obs_tran[0].id<<"x="<<obs_tran[0].x <<"y="<<obs_tran[0].y<< '\n';
 			//find the possible avaliable map_landmark
 			std::vector<LandmarkObs> predicted;
 			for(int j=0;j<map_landmarks.landmark_list.size();j++){
@@ -146,11 +146,11 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 				}
 			}
 
-			std::cout << "/* association */" << '\n';
+			// std::cout << "/* association */" << '\n';
 			//set association between observation and predicted
 			dataAssociation(predicted, obs_tran);
 
-			std::cout << "/* update */" << '\n';
+			// std::cout << "/* update */" << '\n';
 			//update weights
 			double sig_x = std_landmark[0];
 			double sig_y = std_landmark[1];
@@ -166,7 +166,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 
 				w = w*(1.0/(exp(((x-u_x)*(x-u_x)/(2*sig_x*sig_x))+((y-u_y)*(y-u_y)/(2*sig_y*sig_y)))*2*M_PI*sig_x*sig_y));
 			}
-			std::cout << "/* w =  */"<< w << '\n';
+			// std::cout << "/* w =  */"<< w << '\n';
 			particles[p].weight = w;
 			weights[p] = w;
 	}
@@ -188,8 +188,8 @@ std::cout << "/* resample_start */" << '\n';
 	}
 	// std::cout << "x=" <<resample_particles[0].x<<"y="<<resample_particles[0].y<<"theta="<<resample_particles[0].theta<< '\n';
 	particles = resample_particles;
-	std::cout << "x=" <<particles[0].x<<"y="<<particles[0].y<<"theta="<<particles[0].theta<< '\n';
-std::cout << "/* resample_end */" << '\n';
+	// std::cout << "x=" <<particles[0].x<<"y="<<particles[0].y<<"theta="<<particles[0].theta<< '\n';
+	std::cout << "/* resample_end */" << '\n';
 }
 
 Particle ParticleFilter::SetAssociations(Particle& particle, const std::vector<int>& associations,
